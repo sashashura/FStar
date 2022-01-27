@@ -76,7 +76,14 @@ basic_clean:
 	rm -rf _build $(OUTPUT_DIRECTORY) *~ *.checked $(OCAML_EXE) $(KREMLIN_EXE) .depend
 
 .depend: $(FSTAR_FILES)
+ifeq ($(OS),Windows_NT) # The command line length is bounded on Windows, so we may need to take arguments from a response file
+	rm -f .depend.rsp
+	true $(foreach f,--dep full $(addprefix --include , $(INCLUDE_PATHS)) $(FSTAR_FILES),$(shell echo $(f) >> .depend.rsp))
+	$(MY_FSTAR) @.depend.rsp > .depend
+	rm -f .depend.rsp
+else
 	$(MY_FSTAR) --dep full $(addprefix --include , $(INCLUDE_PATHS)) $(FSTAR_FILES) > .depend
+endif
 
 depend: .depend
 
