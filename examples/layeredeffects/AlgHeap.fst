@@ -176,7 +176,6 @@ let _get : tree state [Read] = Op Read () Return
 
 let _put (s:state) : tree unit [Write] = Op Write s Return
 
-[@@allow_informative_binders]
 total // need this for catch!!
 reifiable
 reflectable

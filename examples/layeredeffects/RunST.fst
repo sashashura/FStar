@@ -173,7 +173,6 @@ let if_then_else
 : Type
 = repr a st0 st1 (labs1@labs2)
 
-[@@allow_informative_binders]
 total
 reifiable
 reflectable

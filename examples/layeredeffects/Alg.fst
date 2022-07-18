@@ -177,7 +177,6 @@ let if_then_else
   : Type
   = tree a (labs1@labs2)
 
-[@@allow_informative_binders]
 total
 reifiable
 reflectable

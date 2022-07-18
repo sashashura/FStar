@@ -211,7 +211,6 @@ let if_then_else (a : Type)
   : Type
   = repr a (l1@@l2) (if b then w1 else w2)
 
-[@@allow_informative_binders]
 total
 reifiable
 reflectable

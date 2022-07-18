@@ -150,7 +150,6 @@ let if_then_else
            (fun s0 y s1 -> ite b (post1 s0 y s1) (post2 s0 y s1))
            (labs1@labs2)
 
-[@@allow_informative_binders]
 total // need this for catch!!
 reifiable
 reflectable

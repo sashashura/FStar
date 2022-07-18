@@ -398,8 +398,6 @@ let if_then_else (a:Type)
 = repr a r_in r_out
     l
 
-// [@@smt_reifiable_layered_effect]
-[@@allow_informative_binders]
 reifiable reflectable total
 layered_effect {
   TWrite : a:Type -> (pin: parser) -> (pout: (parser)) -> (memory_invariant) -> Effect

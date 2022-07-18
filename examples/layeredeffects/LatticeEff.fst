@@ -124,7 +124,6 @@ let if_then_else
   : Type
   = repr a (labs1@labs2)
 
-[@@allow_informative_binders]
 total
 reifiable
 reflectable

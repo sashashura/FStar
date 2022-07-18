@@ -1067,7 +1067,6 @@ let if_then_else (a:Type)
     (fun v_in -> (p ==> post_err_f v_in) /\ ((~ p) ==> post_err_g v_in)) // (if_then_else_post_err r_in pre_f pre_g post_err_f post_err_g p)
     l
 
-[@@allow_informative_binders]
 reifiable reflectable total
 layered_effect {
   EWrite : a:Type -> (pin: parser) -> (pout: (parser)) -> (pre: pre_t pin) -> (post: post_t a pin pout pre) -> (post_err: post_err_t pin pre) -> (memory_invariant) -> Effect
