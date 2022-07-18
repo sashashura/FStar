@@ -283,6 +283,7 @@ let if_then_else (a:Type)
 /// The total keyword ensures that all ghost and atomic computations terminate.
 [@@ ite_soundness_by ite_attr]
 total
+reifiable
 reflectable
 effect {
   SteelAGCommon (a:Type)
@@ -307,6 +308,7 @@ effect {
 /// the SteelAGCommon combinators
 [@@ ite_soundness_by ite_attr]
 total
+reifiable
 reflectable
 new_effect SteelAtomicBase = SteelAGCommon
 
@@ -390,6 +392,7 @@ effect SteelAtomicT (a:Type) (opened:inames) (pre:pre_t) (post:post_t a) =
 /// of the extraction. If this is not the case, the F* typechecker will raise an error
 [@@ erasable; ite_soundness_by ite_attr]
 total
+reifiable
 reflectable
 new_effect SteelGhostBase = SteelAGCommon
 

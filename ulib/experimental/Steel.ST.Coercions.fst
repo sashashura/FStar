@@ -91,15 +91,6 @@ let bind_div_st_ (a:Type) (b:Type)
 
 polymonadic_bind (DIV, STF.STBase) |> STF.STBase = bind_div_st_
 
-let reify_steel_comp (#a:Type)
-                     (#pre:pre_t)
-                     (#post:post_t a)
-                     (#req:Type0)
-                     (#ens:a -> Type0)
-                     ($f:unit -> SF.SteelBase a false pre post (fun _ -> req) (fun _ x _ -> ens x))
-  : Dv (STF.repr a false pre post req ens)
-  = SF.reify_steel_comp f
-
 let reflect (#a:Type)
             (#pre:pre_t)
             (#post:post_t a)
@@ -118,7 +109,7 @@ let coerce_steel (#a:Type)
                           (fun _ -> req)
                           (fun _ x _ -> ens x))
    : STF.ST a pre post req ens
-   = reflect (reify_steel_comp f)
+   = reflect (reify (f ()))
 
 let coerce_atomic #a #o #obs
                  (#p:vprop)
@@ -129,10 +120,10 @@ let coerce_atomic #a #o #obs
                    (fun _ -> pre)
                    (fun _ x _ -> post x))
   : STA.STAtomicBase a false o obs p q pre post
-  = STA.STAtomicBase?.reflect (SA.reify_steel_atomic_comp f)
+  = STA.STAtomicBase?.reflect (reify (f ()))
 
 let coerce_atomicF #a #o #p #q #pre #post f
-  = STA.STAtomicBase?.reflect (SA.reify_steel_atomic_comp f)
+  = STA.STAtomicBase?.reflect (reify (f ()))
 
 let coerce_ghost (#a:Type)
                  (#o:inames)
@@ -144,10 +135,10 @@ let coerce_ghost (#a:Type)
                    (fun _ -> pre)
                    (fun _ x _ -> post x))
   : STG.STGhostBase a false o Unobservable p q pre post
-  = STG.STGhostBase?.reflect (SA.reify_steel_ghost_comp f)
+  = STG.STGhostBase?.reflect (reify (f ()))
 
 let coerce_ghostF #a #o #p #q #pre #post f
-  = STGhostBase?.reflect (SA.reify_steel_ghost_comp f)
+  = STGhostBase?.reflect (reify (f ()))
 
 let lift_st_steel
       (a:Type)
