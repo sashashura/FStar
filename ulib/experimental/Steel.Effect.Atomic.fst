@@ -635,15 +635,33 @@ let new_invariant #uses p =
   rewrite_slprop (to_vprop Mem.emp) emp (fun _ -> reveal_emp ());
   i
 
+(*
+ * AR: SteelAtomic and SteelGhost are not marked reifiable since we intend to run Steel programs natively
+ *     However to implement the with_inv combinators we need to reify their thunks to reprs
+ *     We could implement it better by having support for reification only in the .fst file
+ *     But for now assuming a function
+ *)
+assume val reify_steel_atomic_comp
+  (#a:Type) (#framed:bool) (#opened_invariants:inames) (#g:observability)
+  (#pre:pre_t) (#post:post_t a) (#req:req_t pre) (#ens:ens_t pre a post)
+  ($f:unit -> SteelAtomicBase a framed opened_invariants g pre post req ens)
+  : repr a framed opened_invariants g pre post req ens
+
 let with_invariant #a #fp #fp' #opened #p i f =
   rewrite_slprop fp (to_vprop (hp_of fp)) (fun _ -> ());
-  let x = as_atomic_action (Steel.Memory.with_invariant #a #(hp_of fp) #(fun x -> hp_of (fp' x)) #opened #(hp_of p) i (reify (f ()))) in
+  let x = as_atomic_action (Steel.Memory.with_invariant #a #(hp_of fp) #(fun x -> hp_of (fp' x)) #opened #(hp_of p) i (reify_steel_atomic_comp f)) in
   rewrite_slprop (to_vprop (hp_of (fp' x))) (fp' x) (fun _ -> ());
   return x
 
+assume val reify_steel_ghost_comp
+  (#a:Type) (#framed:bool) (#opened_invariants:inames)
+  (#pre:pre_t) (#post:post_t a) (#req:req_t pre) (#ens:ens_t pre a post)
+  ($f:unit -> SteelGhostBase a framed opened_invariants Unobservable pre post req ens)
+  : repr a framed opened_invariants Unobservable pre post req ens
+
 let with_invariant_g #a #fp #fp' #opened #p i f =
   rewrite_slprop fp (to_vprop (hp_of fp)) (fun _ -> ());
-  let x = as_atomic_action_ghost (Steel.Memory.with_invariant #a #(hp_of fp) #(fun x -> hp_of (fp' x)) #opened #(hp_of p) i (reify (f ()))) in
+  let x = as_atomic_action_ghost (Steel.Memory.with_invariant #a #(hp_of fp) #(fun x -> hp_of (fp' x)) #opened #(hp_of p) i (reify_steel_ghost_comp f)) in
   rewrite_slprop (to_vprop (hp_of (fp' x))) (fp' x) (fun _ -> ());
   x
 

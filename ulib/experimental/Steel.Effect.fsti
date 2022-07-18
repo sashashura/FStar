@@ -252,7 +252,6 @@ let if_then_else (a:Type)
 
 /// Assembling the combinators defined above into an actual effect
 [@@ite_soundness_by ite_attr]
-reifiable
 reflectable
 effect {
   SteelBase
